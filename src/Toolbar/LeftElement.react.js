@@ -76,7 +76,8 @@ class LeftElement extends PureComponent {
       spinValue: new Animated.Value(props.isSearchActive ? 1 : 0),
     };
   }
-
+  /*
+  // Remove componentWillReceiveProps before is deprecated.
   componentWillReceiveProps(nextProps) {
     const { isSearchActive, leftElement } = this.props;
 
@@ -92,7 +93,22 @@ class LeftElement extends PureComponent {
       this.setState({ styles: getStyles(nextProps, this.context) });
     }
   }
+  */
+  componentDidUpdate(prevProps, prevState) {
+    const { isSearchActive, leftElement } = this.props;
 
+    if (prevProps.isSearchActive !== isSearchActive) {
+      this.animateIcon(isSearchActive);
+    }
+
+    if (leftElement !== prevProps.leftElement) {
+      this.setState({ leftElement: leftElement });
+    }
+
+    if (shouldUpdateStyles(this.props, prevProps)) {
+      this.setState({ styles: getStyles(this.props, this.context) });
+    }
+  }
   animateIcon = activate => {
     const { spinValue } = this.state;
     const { leftElement } = this.props;

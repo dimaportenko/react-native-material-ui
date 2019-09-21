@@ -184,12 +184,25 @@ class ActionButton extends PureComponent {
 
     this.state = { render: 'button' };
   }
-
+  /*
+  // Remove componentWillReceiveProps before is deprecated.
   componentWillReceiveProps(nextProps) {
     const { hidden } = this.props;
 
     if (nextProps.hidden !== hidden) {
       if (nextProps.hidden === true) {
+        this.hide();
+      } else {
+        this.show();
+      }
+    }
+  }
+  */
+  componentDidUpdate(prevProps, prevState) {
+    const { hidden } = this.props;
+
+    if (prevProps.hidden !== hidden) {
+      if (prevProps.hidden === true) {
         this.hide();
       } else {
         this.show();

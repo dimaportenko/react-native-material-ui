@@ -229,10 +229,15 @@ class ListItem extends PureComponent {
     };
   }
 
+  /*
+  // Remove componentWillReceiveProps before is deprecated.
   componentWillReceiveProps(nextPros) {
     this.setState({ numberOfLines: getNumberOfLines(nextPros) });
   }
-
+  */
+  componentDidUpdate(prevProps, prevState) {
+    this.setState({ numberOfLines: getNumberOfLines(this.props) });
+  }
   onMenuPressed = labels => {
     const { onRightElementPress, onPressValue } = this.props;
 

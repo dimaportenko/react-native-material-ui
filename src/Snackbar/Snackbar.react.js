@@ -118,7 +118,8 @@ class Snackbar extends PureComponent {
 
     this.move(bottomNavigation);
   }
-
+  /*
+  // Remove componentWillReceiveProps before is deprecated.
   componentWillReceiveProps(nextProps) {
     const { style, visible, bottomNavigation } = this.props;
 
@@ -144,7 +145,32 @@ class Snackbar extends PureComponent {
       this.move(nextProps.bottomNavigation);
     }
   }
+  */
+  componentDidUpdate(prevProps, prevState) {
+    const { style, visible, bottomNavigation } = this.props;
 
+    if (prevProps.style !== style) {
+      this.setState({ styles: getStyles(this.props, this.context) });
+    }
+
+    if (prevProps.visible !== visible) {
+      if (visible) {
+        this.setState({ visible: true });
+        this.setHideTimer(this.props);
+      }
+
+      Animated.timing(this.visibility, {
+        toValue: visible ? 1 : 0,
+        duration: 300,
+      }).start(() => {
+        this.setState({ visible: visible });
+      });
+    }
+
+    if (prevProps.bottomNavigation !== bottomNavigation) {
+      this.move(bottomNavigation);
+    }
+  }
   componentWillUnmount() {
     clearTimeout(this.hideTimer);
   }
