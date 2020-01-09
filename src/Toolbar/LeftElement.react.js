@@ -106,7 +106,7 @@ class LeftElement extends PureComponent {
     }
 
     if (shouldUpdateStyles(this.props, prevProps)) {
-      this.setState({ styles: getStyles(this.props, this.context) });
+//      this.setState({ styles: getStyles(this.props, this.context) });
     }
   }
   animateIcon = activate => {
