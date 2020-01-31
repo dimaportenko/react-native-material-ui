@@ -44,9 +44,14 @@ class Card extends PureComponent {
       styles: getStyles(props),
     }
   }
-
+  /*
+  // Remove componentWillReceiveProps before is deprecated.
   componentWillReceiveProps(nextProps) {
     this.setState({ styles: getStyles(nextProps) })
+  }
+  */
+  componentDidUpdate(prevProps, prevState) {
+    this.setState({ styles: getStyles(this.props) });
   }
 
   renderContent = () => {

@@ -190,6 +190,8 @@ class Toolbar extends PureComponent {
     }
   }
 
+  /*
+  // Remove componentWillReceiveProps before is deprecated.
   componentWillReceiveProps(nextProps) {
     const { isSearchActiveInternal } = this.state
     const { isSearchActive, hidden } = this.props
@@ -224,7 +226,41 @@ class Toolbar extends PureComponent {
       }
     }
   }
+  */
+  componentDidUpdate(prevProps, prevState) {
+    const { isSearchActiveInternal } = this.state;
+    const { isSearchActive, hidden } = this.props;
 
+    // if search is active and we clicked on the results which does not allow search
+    // then close the previous search.
+    if (isSearchActiveInternal && !prevProps.searchable) {
+      this.onSearchCloseRequested();
+    }
+
+    // there should be also posibility to change search through props, so we need to check
+    // props first and then we should check state if we need to change search state
+    if (isSearchActive !== prevProps.isSearchActive) {
+      // because nextProps.isSearchActive could be null, undefined
+      // so we need it convert to boolean
+      const nextIsSearchActive = !!isSearchActive;
+      if (isSearchActiveInternal !== nextIsSearchActive) {
+        if (nextIsSearchActive) {
+          this.onSearchOpenRequested();
+        } else {
+          this.onSearchCloseRequested();
+        }
+      }
+    }
+
+    // if hidden prop is changed we animate show or hide
+    if (prevProps.hidden !== hidden) {
+      if (hidden === true) {
+        this.hide();
+      } else {
+        this.show();
+      }
+    }
+  }
   onSearchOpenRequested = () => {
     this.setState({
       isSearchActiveInternal: true,

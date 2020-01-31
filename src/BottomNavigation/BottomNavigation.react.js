@@ -65,7 +65,8 @@ class BottomNavigation extends PureComponent {
       moveAnimated: new Animated.Value(0),
     }
   }
-
+  /*
+  // Remove componentWillReceiveProps before is deprecated.
   componentWillReceiveProps(nextProps) {
     const { style, hidden } = this.props
 
@@ -78,6 +79,22 @@ class BottomNavigation extends PureComponent {
         this.hide()
       } else {
         this.show()
+      }
+    }
+  }
+  */
+  componentDidUpdate(prevProps, prevState) {
+    const { style, hidden } = this.props;
+
+    if (prevProps.style !== style) {
+      this.setState({ styles: getStyles(this.props, this.context) });
+    }
+
+    if (prevProps.hidden !== hidden) {
+      if (hidden === true) {
+        this.hide();
+      } else {
+        this.show();
       }
     }
   }

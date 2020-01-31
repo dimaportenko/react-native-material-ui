@@ -153,6 +153,8 @@ class IconToggle extends PureComponent {
     this.onPressOut = this.onPressOut.bind(this)
   }
 
+  /*
+  // Remove componentWillReceiveProps before is deprecated.
   componentWillReceiveProps(nextProps) {
     const { iconSize } = this.state
     const { percent } = this.props
@@ -169,7 +171,23 @@ class IconToggle extends PureComponent {
       })
     }
   }
+  */
+  componentDidUpdate(prevProps, prevState) {
+    const { iconSize } = this.state;
+    const { percent } = this.props;
 
+    const nextIconSize = getIconSize(this.props);
+
+    if (iconSize !== nextIconSize || prevProps.percent !== percent) {
+      const containerSize = getContainerSize(iconSize);
+
+      this.setState({
+        containerSize,
+        iconSize,
+        rippleSize: getRippleSize(containerSize, percent),
+      });
+    }
+  }
   onPress() {
     const { disabled, onPress } = this.props
 
